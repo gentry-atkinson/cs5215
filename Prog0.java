@@ -1,9 +1,16 @@
 /**
+
+  Assignment 1
   
   This is a stand-alone Java program that reads the standard input
   then prints the number of newline characters, the number of
   white-space separated character sequences, and the number of
   bytes read.
+
+  Student: Gentry Atkinson
+  ID: A04115225
+  Class: CS5318
+  Due: Jan 31, 2019
   
   */
 
