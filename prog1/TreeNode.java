@@ -13,7 +13,7 @@ public class TreeNode implements Node, Cloneable {
   }
 
   public void addChild(Node n, int i) {
-    if (children.length == 2){
+    if (i >= 2){
       System.err.println("Target Node can only have 2 children.");
       return;
     } else if (children == null) {
@@ -25,6 +25,51 @@ public class TreeNode implements Node, Cloneable {
     }
     children[i] = n;
   }
+
+  public boolean addNode(Node n){
+    if (children == null){
+      children = new Node[1];
+      children[0] = n;
+      return true;
+    }
+
+    TreeNode left = (TreeNode)children[0];
+    if (left != null && left.addNode(n)) return true;
+    else if (children.length == 1) {
+      Node c[] = new Node[2];
+      System.arraycopy(children, 0, c, 0, children.length);
+      children = c;
+      children[1] = n;
+      return true;
+    }
+    TreeNode right = (TreeNode)children[1];
+    if (right != null && right.addNode(n)){
+      return true;
+    }
+    return false;
+  }
+
+  public int eval(){
+    try {
+      if (children.length< 2){
+        throw new TreeNotFull("This tree is not full.");
+      }
+      else {
+        TreeNode left = (TreeNode)children[0];
+        TreeNode right = (TreeNode)children[1];
+        if (id == ADD){
+          return (left.eval() + right.eval());
+        }
+        else if (id == MUL){
+          return (left.eval() * right.eval());
+        }
+      }
+    }
+    catch (TreeNotFull e){
+      System.err.println("This tree is not full");
+    }
+    return 0;
+  }  
 
   public Node getChild(int i) {
     return children[i];
@@ -71,5 +116,49 @@ public class TreeNode implements Node, Cloneable {
       }
     }
     return newNode;
+  }
+
+  public void printNode (int tier){
+    for (int i = 0; i < tier; ++i) System.out.print(" ");
+    if (id == ADD) System.out.println("+");
+    else if (id == MUL) System.out.println("*");
+    else {
+      System.err.println("Node has bad ID on tier " + tier);
+      return;
+    }
+    if (children == null || children.length < 2){
+      System.err.println("Tree is not complete on tier " + tier);
+      return;
+    }
+
+    TreeNode left = (TreeNode)children[0];
+    TreeNode right = (TreeNode)children[1];
+
+    right.printNode(tier + 1);
+    left.printNode(tier + 1);
+    return;
+  }
+  public void alterIDs (){
+    if (id == ADD) id = MUL;
+    else if (id == MUL) id = ADD;
+    else System.err.println("Node has bad ID value to alter.");
+
+    TreeNode left = (TreeNode)children[0];
+    TreeNode right = (TreeNode)children[1];
+ 
+    left.alterIDs();
+    right.alterIDs();
+
+    return;
+  } 
+
+  public void printNode (){
+    printNode(0);
+  }
+  
+  private class TreeNotFull extends Exception{
+    public TreeNotFull (String m){
+      super(m);
+    }
   }
 }
