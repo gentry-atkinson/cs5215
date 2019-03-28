@@ -1,14 +1,21 @@
+/**
+* Author:	Gentry Atkinson
+* Source:	eg2.jjt from Sun Microsystems, Inc.
+* Class:	CS5318 Spring 2019
+* Assign:	PA2
+* Descrip:	Read a post-fix expression, print the parse tree, then print
+*			the in-fix expression with parenthesis.
+**/
+
 options {
-  MULTI=true; // an option for JJTree
-              // set to build a multi mode tree
-              // (with different types of nodes)
+  MULTI=true; 
 }
 
 PARSER_BEGIN(prog2)
 
 class prog2 {
   public static void main(String args[]) {
-    System.out.println("Reading from standard input...");
+    System.out.println("Enter a simplified post-fix expression...");
     prog2 t = new prog2(System.in);
     try {
       ASTStart n = t.Start();
@@ -22,5 +29,61 @@ class prog2 {
   }
 }
 
-PARSER_END(eg2)
+PARSER_END(prog2)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| <"//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")>
+| <"/*" (~["*"])* "*" (~["/"] (~["*"])* "*")* "/">
+}
+
+TOKEN : /* LITERALS */
+{
+  < INTEGER_LITERAL:
+        <DECIMAL_LITERAL> (["l","L"])?
+  >
+|
+  < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+}
+
+TOKEN : /* IDENTIFIERS */
+{
+  < IDENTIFIER: <LETTER> (<LETTER>|<DIGIT>)* >
+|
+  < #LETTER: ["_","a"-"z","A"-"Z"] >
+|
+  < #DIGIT: ["0"-"9"] >
+}
+
+TOKEN : /* OPERATORS */
+{
+	<OPERATOR : ["+", "*"] >
+}
+
+ASTStart Start() : {}
+{
+  E()
+  { return jjtThis; }
+}
+
+
+void E() #void : {}
+{
+		Integer() (E() Operator())*
+}
+
+
+void Integer() #Integer : {}
+{
+  (<INTEGER_LITERAL>)
+}
+
+void Operator() #Operator(2) : {}
+{
+	(<OPERATOR>)
+}
 
