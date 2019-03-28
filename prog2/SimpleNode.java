@@ -79,6 +79,22 @@ class SimpleNode implements Node {
 	public void setName (String name){
 		this.name = name;	
 	}
+
+	public String infixExpr() {
+		String infix = "";
+		if (jjtGetNumChildren() >= 2){
+			infix = infix + "(" + jjtGetChild(0).infixExpr();
+			infix = infix + name;
+			infix = infix + jjtGetChild(1).infixExpr() + ")";
+		}
+		else if (jjtGetNumChildren() == 1){
+			infix = infix + jjtGetChild(0).infixExpr();
+		}
+		else {
+			infix = infix + name;
+		}
+		return infix;
+	}
 }
 
 /* JavaCC - OriginalChecksum=de56ef6c6ca664a45c4f1c772a1a557a (do not edit this line) */

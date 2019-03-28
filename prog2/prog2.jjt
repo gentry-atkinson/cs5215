@@ -21,7 +21,7 @@ class prog2 {
       ASTStart n = t.Start();
       n.dump(" ");
       System.out.println("The in-fix representation: ");
-	  System.out.println(t.infixExpr());
+	  System.out.println(n.infixExpr());
     } catch (Exception e) {
       System.out.println("Oops.");
       System.out.println(e.getMessage());
@@ -65,7 +65,7 @@ TOKEN : /* OPERATORS */
 	<OPERATOR : ["+", "*"]>
 }
 
-ASTStart Start() : {}
+ASTStart Start()  : {}
 {
   E()
   { return jjtThis; }
@@ -99,43 +99,3 @@ void Operator() #Operator(2) :
     	jjtThis.setName(t.image);
 	}
 }
-
-String infixExpr() : {}
-{
-	{
-		java.util.Stack<String> s = new java.util.Stack<String>();
-		Node t = jjtree.rootNode();
-		String tString = t.toString();
-		while (tString != "")
-		{ 
-			try {
-				// Push operands 
-				if (tString != "+" && tString != "*") 
-				{ 
-					s.push(tString + ""); 
-				} 
-
-				else
-				{ 
-					String op1 = s.peek(); 
-					s.pop(); 
-					String op2 = s.peek(); 
-					s.pop(); 
-					s.push("(" + op2 + tString + 
-						op1 + ")");
-				}
-				t = t.jjtGetChild(0);
-				tString = t.toString();
-			}
-			catch (TokenMgrError e) {
-				System.err.println("Bad token at in-fix");
-				break;	
-			}
-		} 
-		if (!s.isEmpty())
-			return s.peek();
-		else
-			return "No string";
-	}
-}
-
