@@ -19,7 +19,7 @@ class prog2 {
     prog2 t = new prog2(System.in);
     try {
       ASTStart n = t.Start();
-      n.dump("");
+      n.dump(" ");
       System.out.println("The in-fix representation: ");
 	  System.out.println(t.infixExpr());
     } catch (Exception e) {
@@ -104,8 +104,8 @@ String infixExpr() : {}
 {
 	{
 		java.util.Stack<String> s = new java.util.Stack<String>();
-		Token t = prog2TokenManager.getNextToken();
-		String tString = t.image;
+		Node t = jjtree.rootNode();
+		String tString = t.toString();
 		while (tString != "")
 		{ 
 			try {
@@ -124,8 +124,8 @@ String infixExpr() : {}
 					s.push("(" + op2 + tString + 
 						op1 + ")");
 				}
-				t = prog2TokenManager.getNextToken();
-				tString = t.image;
+				t = t.jjtGetChild(0);
+				tString = t.toString();
 			}
 			catch (TokenMgrError e) {
 				System.err.println("Bad token at in-fix");
