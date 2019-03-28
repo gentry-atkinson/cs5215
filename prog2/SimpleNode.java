@@ -83,9 +83,9 @@ class SimpleNode implements Node {
 	public String infixExpr() {
 		String infix = "";
 		if (jjtGetNumChildren() >= 2){
-			infix = infix + "( " + jjtGetChild(0).infixExpr();
-			infix = infix + name;
-			infix = infix + jjtGetChild(1).infixExpr() + " )";
+			infix = infix + " ( " + jjtGetChild(0).infixExpr();
+			infix = infix + " " + name + " ";
+			infix = infix + jjtGetChild(1).infixExpr() + " ) ";
 		}
 		else if (jjtGetNumChildren() == 1){
 			infix = infix + " " + jjtGetChild(0).infixExpr() + " ";

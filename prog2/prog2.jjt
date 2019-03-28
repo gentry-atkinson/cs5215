@@ -51,14 +51,6 @@ TOKEN : /* LITERALS */
   < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
 }
 
-TOKEN : /* IDENTIFIERS */
-{
-  < IDENTIFIER: <LETTER> (<LETTER>|<DIGIT>)* >
-|
-  < #LETTER: ["_","a"-"z","A"-"Z"] >
-|
-  < #DIGIT: ["0"-"9"] >
-}
 
 TOKEN : /* OPERATORS */
 {
@@ -96,6 +88,6 @@ void Operator() #Operator(2) :
 {
 	t = <OPERATOR>
 	{
-    	jjtThis.setName(t.image);
+    		jjtThis.setName(t.image);
 	}
 }
