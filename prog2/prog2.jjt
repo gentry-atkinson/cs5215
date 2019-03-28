@@ -103,7 +103,39 @@ void Operator() #Operator(2) :
 String infixExpr() : {}
 {
 	{
-		return jjtThis.toString();
+		java.util.Stack<String> s = new java.util.Stack<String>();
+		Token t = prog2TokenManager.getNextToken();
+		String tString = t.image;
+		while (tString != "")
+		{ 
+			try {
+				// Push operands 
+				if (tString != "+" && tString != "*") 
+				{ 
+					s.push(tString + ""); 
+				} 
+
+				else
+				{ 
+					String op1 = s.peek(); 
+					s.pop(); 
+					String op2 = s.peek(); 
+					s.pop(); 
+					s.push("(" + op2 + tString + 
+						op1 + ")");
+				}
+				t = prog2TokenManager.getNextToken();
+				tString = t.image;
+			}
+			catch (TokenMgrError e) {
+				System.err.println("Bad token at in-fix");
+				break;	
+			}
+		} 
+		if (!s.isEmpty())
+			return s.peek();
+		else
+			return "No string";
 	}
 }
 
