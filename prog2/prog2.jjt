@@ -20,7 +20,8 @@ class prog2 {
     try {
       ASTStart n = t.Start();
       n.dump("");
-      System.out.println("Thank you.");
+      System.out.println("The in-fix representation: ");
+	  System.out.println(t.infixExpr());
     } catch (Exception e) {
       System.out.println("Oops.");
       System.out.println(e.getMessage());
@@ -61,7 +62,7 @@ TOKEN : /* IDENTIFIERS */
 
 TOKEN : /* OPERATORS */
 {
-	<OPERATOR : ["+", "*"] >
+	<OPERATOR : ["+", "*"]>
 }
 
 ASTStart Start() : {}
@@ -77,13 +78,32 @@ void E() #void : {}
 }
 
 
-void Integer() #Integer : {}
+void Integer() #Integer(0) :
 {
-  (<INTEGER_LITERAL>)
+  Token t;
+}
+{
+  t =<INTEGER_LITERAL>
+  {
+    jjtThis.setName(t.image);
+  }
 }
 
-void Operator() #Operator(2) : {}
+void Operator() #Operator(2) :
 {
-	(<OPERATOR>)
+	Token t;
+}
+{
+	t = <OPERATOR>
+	{
+    	jjtThis.setName(t.image);
+	}
+}
+
+String infixExpr() : {}
+{
+	{
+		return jjtThis.toString();
+	}
 }
 
