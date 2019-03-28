@@ -1,0 +1,26 @@
+options {
+  MULTI=true; // an option for JJTree
+              // set to build a multi mode tree
+              // (with different types of nodes)
+}
+
+PARSER_BEGIN(prog2)
+
+class prog2 {
+  public static void main(String args[]) {
+    System.out.println("Reading from standard input...");
+    prog2 t = new prog2(System.in);
+    try {
+      ASTStart n = t.Start();
+      n.dump("");
+      System.out.println("Thank you.");
+    } catch (Exception e) {
+      System.out.println("Oops.");
+      System.out.println(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+}
+
+PARSER_END(eg2)
+
