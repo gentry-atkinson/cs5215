@@ -7,7 +7,7 @@ class SimpleNode implements Node {
   protected Node[] children;
   protected int id;
   protected Object value;
-  protected prog2 parser;
+  protected prog3 parser;
 	protected String name;
 
   public SimpleNode(int i) {
@@ -15,7 +15,7 @@ class SimpleNode implements Node {
 	  name = "";
   }
 
-  public SimpleNode(prog2 p, int i) {
+  public SimpleNode(prog3 p, int i) {
     this(i);
     parser = p;
   }
