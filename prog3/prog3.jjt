@@ -1,0 +1,93 @@
+/**
+* Author:	Gentry Atkinson
+* Source:	eg2.jjt from Sun Microsystems, Inc.
+* Class:	CS5318 Spring 2019
+* Assign:	PA3
+* Descrip:	Read an application of a  lambda abstraction, print the parse tree, then print
+*			the in-fix expression with parenthesis.
+**/
+
+options {
+  MULTI=true; 
+}
+
+PARSER_BEGIN(prog2)
+
+class prog2 {
+  public static void main(String args[]) {
+    System.out.println("Enter a simplified post-fix expression...");
+    prog2 t = new prog2(System.in);
+    try {
+      ASTStart n = t.Start();
+      n.dump(" ");
+      System.out.println("The in-fix representation: ");
+	  System.out.println(n.infixExpr());
+    } catch (Exception e) {
+      System.out.println("Oops.");
+      System.out.println(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+}
+
+PARSER_END(prog2)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| <"//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")>
+| <"/*" (~["*"])* "*" (~["/"] (~["*"])* "*")* "/">
+}
+
+TOKEN : /* LITERALS */
+{
+  < INTEGER_LITERAL:
+        <DECIMAL_LITERAL> (["l","L"])?
+  >
+|
+  < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+}
+
+
+TOKEN : /* OPERATORS */
+{
+	<OPERATOR : ["+", "*"]>
+}
+
+ASTStart Start()  : {}
+{
+  E()
+  { return jjtThis; }
+}
+
+
+void E() #void : {}
+{
+		Integer() (E() Operator())*
+}
+
+
+void Integer() #Integer(0) :
+{
+  Token t;
+}
+{
+  t =<INTEGER_LITERAL>
+  {
+    jjtThis.setName(t.image);
+  }
+}
+
+void Operator() #Operator(2) :
+{
+	Token t;
+}
+{
+	t = <OPERATOR>
+	{
+    		jjtThis.setName(t.image);
+	}
+}
