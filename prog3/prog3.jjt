@@ -64,7 +64,9 @@ TOKEN : /*IDENTIFIER */
 
 TOKEN : /* CONSTANT */
 {
-	<CONSTANT: [<INTEGER_LITERAL> | <OPERATOR>] > 
+	<CONSTANT: 
+		[<INTEGER_LITERAL>]
+	 > 
 }
 
 ASTStart Start()  : {}
