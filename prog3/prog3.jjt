@@ -54,7 +54,17 @@ TOKEN : /* LITERALS */
 
 TOKEN : /* OPERATORS */
 {
-	<OPERATOR : ["+", "*"]>
+	<OPERATOR : ["+", "*", "-", "/"]>
+}
+
+TOKEN : /*IDENTIFIER */
+{
+	<IDENTIFIER : ["a" - "z"](["1"-"9"])? >
+}
+
+TOKEN : /* CONSTANT */
+{
+	<CONSTANT: [<INTEGER_LITERAL>, <OPERATOR>] > 
 }
 
 ASTStart Start()  : {}
