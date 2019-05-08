@@ -11,16 +11,16 @@ options {
   MULTI=true; 
 }
 
-PARSER_BEGIN(prog2)
+PARSER_BEGIN(prog3)
 
-class prog2 {
+class prog3 {
   public static void main(String args[]) {
-    System.out.println("Enter a simplified post-fix expression...");
-    prog2 t = new prog2(System.in);
+    System.out.println("Enter an applied lambda expression: ");
+    prog3 t = new prog3(System.in);
     try {
       ASTStart n = t.Start();
       n.dump(" ");
-      System.out.println("The in-fix representation: ");
+      System.out.println("The normal order evaluation results: ");
 	  System.out.println(n.infixExpr());
     } catch (Exception e) {
       System.out.println("Oops.");
@@ -30,7 +30,7 @@ class prog2 {
   }
 }
 
-PARSER_END(prog2)
+PARSER_END(prog3)
 
 SKIP :
 {
