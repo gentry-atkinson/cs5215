@@ -8,7 +8,7 @@ class SimpleNode implements Node {
   protected int id;
   protected Object value;
   protected prog3 parser;
-  protected String name;
+  protected String name = "+++";
 
   public SimpleNode(int i) {
     id = i;
@@ -57,7 +57,7 @@ class SimpleNode implements Node {
      toString(String), otherwise overriding toString() is probably all
      you need to do. */
 
-  public String toString() { return /*prog3TreeConstants.jjtNodeName[id]*/ name; }
+  public String toString() { return  name; }
   public String toString(String prefix) { return prefix + toString(); }
 
   /* Override this method if you want to customize how the node dumps
@@ -77,26 +77,41 @@ class SimpleNode implements Node {
 	
 	
 	public void setName (String name){
-		this.name = name;	
+		name = name.trim();
+		if (name.equals("*"))
+			this.name = "mul";
+		else if (name.equals("+"))
+			this.name = "add";
+		else if (name.equals("-"))
+			this.name = "sub";
+		else if (name.equals("/"))
+			this.name = "div";
+		else
+			this.name = name;	
 	}
-	/*
-	public String infixExpr() {
-		String infix = "";
-		if (jjtGetNumChildren() >= 2){
-			infix = infix + " ( " + jjtGetChild(0).infixExpr();
-			infix = infix + " " + name + " ";
-			infix = infix + jjtGetChild(1).infixExpr() + " ) ";
+
+	public String astToString(){
+		String output = "";
+		if (name == "appl"){
+			output = output + "(";
+			output = output + jjtGetChild(0).astToString();
+			output = output + jjtGetChild(1).astToString();
+			output = output + ")";
 		}
-		else if (jjtGetNumChildren() == 1){
-			infix = infix + " " + jjtGetChild(0).infixExpr() + " ";
+		else if (name == "lamb"){
+			output = output + "L";
+			output = output + jjtGetChild(0).astToString();
+			output = output + ".";
+			output = output + jjtGetChild(1).astToString();
+		}
+		else if (name == "..."){
+			output = output + "[" + jjtGetChild(0).astToString() + "]";
 		}
 		else {
-			infix = infix + name;
+			output = output + name;
 		}
-		return infix;
-	}
-	*/
-	
-}
 
+		return output;
+	}
+}
 /* JavaCC - OriginalChecksum=de56ef6c6ca664a45c4f1c772a1a557a (do not edit this line) */

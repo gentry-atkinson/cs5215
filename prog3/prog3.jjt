@@ -20,8 +20,8 @@ class prog3 {
     try {
       ASTStart n = t.Start();
       n.dump(" ");
-      System.out.println("The normal order evaluation results: ");
-	  System.out.println(n.infixExpr());
+      System.out.println("The lambda expression in the concrete syntax: ");
+	  System.out.println(n.astToString());
     } catch (Exception e) {
       System.out.println("Oops.");
       System.out.println(e.getMessage());
@@ -54,10 +54,14 @@ TOKEN : /* CONSTANT */
 	| < #OPERATOR : ["+", "-", "*", "/"]>
 }
 
-ASTStart Start()  : {}
+
+ASTStart Start()   : {}
 {
-  Expr()
-  { return jjtThis; }
+	Expr()
+	{ 
+		jjtThis.setName("...");
+		return jjtThis;
+	}
 }
 
 
@@ -65,22 +69,20 @@ void Expr() #void : {}
 {
 	Constant()
 	| Identifier()	
-	| Abstraction()
 	| Application()
+	| Abstraction()
 }
 
 
-void Constant() #void :
+void Constant() #Constant(2) :
 {
 	Token t;
 }
 {
-	(
 	t = <CONSTANT>
 	{
     		jjtThis.setName(t.image);
 	}
-	)#Constant(0)
 }
 
 void Identifier() #Identifier(0):
@@ -96,10 +98,16 @@ void Identifier() #Identifier(0):
 
 void Abstraction() #Abstraction(2): {}
 {
-	"L" (Identifier())+ "." Expr()
+	"(L" (Identifier())+ "." (Expr())+ ")"
+	{
+		jjtThis.setName("lamb");
+	}
 }
 
 void Application() #Application(2): {}
 {
-	"(" Expr() (Expr())+ ")"
+	"(" Expr() (Expr())* ")"
+	{
+		jjtThis.setName("appl");
+	}
 }
