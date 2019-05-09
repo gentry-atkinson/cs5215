@@ -97,7 +97,7 @@ public class SimpleNode implements Node {
 	public String astToString(){
 		String output = "";
 		if (name == "appl"){
-			output = output + "( ";
+			output = output + "(";
       if (children != null) {
         for (int i = 0; i < children.length; ++i) {
           SimpleNode n = (SimpleNode)children[i];
