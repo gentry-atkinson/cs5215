@@ -46,7 +46,7 @@ SKIP :
 
 TOKEN : /*IDENTIFIER */
 {
-	<IDENTIFIER : ["a" - "z"](["1"-"9"])? >
+	<IDENTIFIER : ["a" - "z"](["a" - "z", "1"-"9"])* >
 }
 
 TOKEN : /* CONSTANT */
@@ -71,8 +71,8 @@ void Expr() #void : {}
 {
 	Constant()
 	| Identifier()
-	| Application()
-	| Abstraction()
+	| "(" Application() ")"
+	| "(L" Abstraction() ")"
 }
 
 
@@ -101,7 +101,7 @@ void Identifier() #Identifier(0):
 
 void Abstraction() #Abstraction(>1): {}
 {
-	"(L" (Identifier())+ "." (Expr())+ ")"
+	 Identifier() [ Abstraction() | "." (Expr())+]
 	{
 		jjtThis.setName("lamb");
 	}
@@ -109,7 +109,7 @@ void Abstraction() #Abstraction(>1): {}
 
 void Application() #Application(>1): {}
 {
-	"(" Expr() (Expr())* ")"
+	Expr() (Application())*
 	{
 		jjtThis.setName("appl");
 	}
