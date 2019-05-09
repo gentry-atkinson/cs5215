@@ -8,7 +8,7 @@ class SimpleNode implements Node {
   protected int id;
   protected Object value;
   protected prog3 parser;
-	protected String name;
+  protected String name;
 
   public SimpleNode(int i) {
     id = i;
@@ -57,7 +57,7 @@ class SimpleNode implements Node {
      toString(String), otherwise overriding toString() is probably all
      you need to do. */
 
-  public String toString() { return /*prog2TreeConstants.jjtNodeName[id]*/ name; }
+  public String toString() { return /*prog3TreeConstants.jjtNodeName[id]*/ name; }
   public String toString(String prefix) { return prefix + toString(); }
 
   /* Override this method if you want to customize how the node dumps
@@ -79,7 +79,7 @@ class SimpleNode implements Node {
 	public void setName (String name){
 		this.name = name;	
 	}
-
+	/*
 	public String infixExpr() {
 		String infix = "";
 		if (jjtGetNumChildren() >= 2){
@@ -95,6 +95,8 @@ class SimpleNode implements Node {
 		}
 		return infix;
 	}
+	*/
+	
 }
 
 /* JavaCC - OriginalChecksum=de56ef6c6ca664a45c4f1c772a1a557a (do not edit this line) */

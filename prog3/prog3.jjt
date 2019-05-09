@@ -42,21 +42,6 @@ SKIP :
 | <"/*" (~["*"])* "*" (~["/"] (~["*"])* "*")* "/">
 }
 
-TOKEN : /* LITERALS */
-{
-  < INTEGER_LITERAL:
-        <DECIMAL_LITERAL> (["l","L"])?
-  >
-|
-  < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
-}
-
-
-TOKEN : /* OPERATORS */
-{
-	<OPERATOR : ["+", "*", "-", "/"]>
-}
-
 TOKEN : /*IDENTIFIER */
 {
 	<IDENTIFIER : ["a" - "z"](["1"-"9"])? >
@@ -64,42 +49,57 @@ TOKEN : /*IDENTIFIER */
 
 TOKEN : /* CONSTANT */
 {
-	<CONSTANT: 
-		{<INTEGER_LITERAL> | <OPERATOR>}
-	 > 
+	<CONSTANT: <NUM> | <OPERATOR> >
+	| < #NUM : ["1" - "9"](["0" - "9"])*>
+	| < #OPERATOR : ["+", "-", "*", "/"]>
 }
 
 ASTStart Start()  : {}
 {
-  E()
+  Expr()
   { return jjtThis; }
 }
 
 
-void E() #void : {}
+void Expr() #void : {}
 {
-		Integer() (E() Operator())*
+	Constant()
+	| Identifier()	
+	| Abstraction()
+	| Application()
 }
 
 
-void Integer() #Integer(0) :
-{
-  Token t;
-}
-{
-  t =<INTEGER_LITERAL>
-  {
-    jjtThis.setName(t.image);
-  }
-}
-
-void Operator() #Operator(2) :
+void Constant() #void :
 {
 	Token t;
 }
 {
-	t = <OPERATOR>
+	(
+	t = <CONSTANT>
 	{
     		jjtThis.setName(t.image);
 	}
+	)#Constant(0)
+}
+
+void Identifier() #Identifier(0):
+{
+	Token t;
+}
+{
+	t = <IDENTIFIER>
+	{
+		jjtThis.setName(t.image);
+	}
+}
+
+void Abstraction() #Abstraction(2): {}
+{
+	"L" (Identifier())+ "." Expr()
+}
+
+void Application() #Application(2): {}
+{
+	"(" Expr() (Expr())+ ")"
 }
