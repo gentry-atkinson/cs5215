@@ -22,6 +22,8 @@ class prog3 {
       n.dump(" ");
       System.out.println("The lambda expression in the concrete syntax: ");
 	    System.out.println(n.astToString());
+      System.out.println("The abstract syntax tree with free variables: ");
+      n.dumpFV();
     } catch (Exception e) {
       System.out.println("Oops.");
       System.out.println(e.getMessage());
@@ -93,6 +95,7 @@ void Identifier() #Identifier(0):
 	t = <IDENTIFIER>
 	{
 		jjtThis.setName(t.image);
+    jjtThis.pushFreeVar(t.image);
 	}
 }
 

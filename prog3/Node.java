@@ -4,6 +4,8 @@
    machinery for constructing the parent and child relationships
    between nodes. */
 
+import java.util.*;
+
 public
 interface Node {
 
@@ -32,5 +34,7 @@ interface Node {
   public int jjtGetNumChildren();
 
   public String astToString();
+  public void pushFreeVar(String s);
+  public Set<String> freeVars();
 }
 /* JavaCC - OriginalChecksum=77d9f6c6ec5657539851d2d8cc26461d (do not edit this line) */
