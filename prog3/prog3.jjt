@@ -8,7 +8,7 @@
 **/
 
 options {
-  MULTI=true; 
+  MULTI=true;
 }
 
 PARSER_BEGIN(prog3)
@@ -21,7 +21,7 @@ class prog3 {
       ASTStart n = t.Start();
       n.dump(" ");
       System.out.println("The lambda expression in the concrete syntax: ");
-	  System.out.println(n.astToString());
+	    System.out.println(n.astToString());
     } catch (Exception e) {
       System.out.println("Oops.");
       System.out.println(e.getMessage());
@@ -55,26 +55,26 @@ TOKEN : /* CONSTANT */
 }
 
 
-ASTStart Start()   : {}
+ASTStart Start() : {}
 {
-	Expr()
-	{ 
-		jjtThis.setName("...");
-		return jjtThis;
-	}
+  Expr()
+  {
+    jjtThis.setName("...");
+    return jjtThis;
+  }
 }
 
 
 void Expr() #void : {}
 {
 	Constant()
-	| Identifier()	
+	| Identifier()
 	| Application()
 	| Abstraction()
 }
 
 
-void Constant() #Constant(2) :
+void Constant() #Constant(0) :
 {
 	Token t;
 }
@@ -96,7 +96,7 @@ void Identifier() #Identifier(0):
 	}
 }
 
-void Abstraction() #Abstraction(2): {}
+void Abstraction() #Abstraction(>1): {}
 {
 	"(L" (Identifier())+ "." (Expr())+ ")"
 	{
@@ -104,7 +104,7 @@ void Abstraction() #Abstraction(2): {}
 	}
 }
 
-void Application() #Application(2): {}
+void Application() #Application(>1): {}
 {
 	"(" Expr() (Expr())* ")"
 	{

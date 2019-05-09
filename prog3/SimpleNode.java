@@ -69,13 +69,13 @@ class SimpleNode implements Node {
       for (int i = 0; i < children.length; ++i) {
         SimpleNode n = (SimpleNode)children[i];
         if (n != null) {
-          n.dump(prefix + " ");
+          n.dump(prefix + "-");
         }
       }
     }
   }
-	
-	
+
+
 	public void setName (String name){
 		name = name.trim();
 		if (name.equals("*"))
@@ -87,28 +87,28 @@ class SimpleNode implements Node {
 		else if (name.equals("/"))
 			this.name = "div";
 		else
-			this.name = name;	
+			this.name = name;
 	}
 
 	public String astToString(){
 		String output = "";
 		if (name == "appl"){
-			output = output + "(";
+			output = output + "( ";
 			output = output + jjtGetChild(0).astToString();
 			output = output + jjtGetChild(1).astToString();
 			output = output + ")";
 		}
 		else if (name == "lamb"){
-			output = output + "L";
+			output = output + "L ";
 			output = output + jjtGetChild(0).astToString();
 			output = output + ".";
 			output = output + jjtGetChild(1).astToString();
 		}
 		else if (name == "..."){
-			output = output + "[" + jjtGetChild(0).astToString() + "]";
+			output = output + "( " + jjtGetChild(0).astToString() + " )";
 		}
 		else {
-			output = output + name;
+			output = output + " " + name;
 		}
 
 		return output;
