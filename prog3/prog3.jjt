@@ -99,9 +99,9 @@ void Identifier() #Identifier(0):
 	}
 }
 
-void Abstraction() #Abstraction(>1): {}
+void Abstraction() #Abstraction(2): {}
 {
-	 Identifier() [ Abstraction() | "." (Expr())+]
+	 Identifier() [ Abstraction() | "." Application()]
 	{
 		jjtThis.setName("lamb");
 	}
