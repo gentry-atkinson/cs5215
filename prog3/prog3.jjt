@@ -109,7 +109,7 @@ void Abstraction() #Abstraction(>1): {}
 
 void Application() #Application(>1): {}
 {
-	Expr() (Application())*
+  (Expr())+
 	{
 		jjtThis.setName("appl");
 	}

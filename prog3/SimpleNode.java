@@ -98,15 +98,28 @@ public class SimpleNode implements Node {
 		String output = "";
 		if (name == "appl"){
 			output = output + "( ";
-			output = output + jjtGetChild(0).astToString();
-			output = output + jjtGetChild(1).astToString();
+      if (children != null) {
+        for (int i = 0; i < children.length; ++i) {
+          SimpleNode n = (SimpleNode)children[i];
+          if (n != null) {
+            output = output + n.astToString();
+          }
+        }
+      }
 			output = output + ")";
 		}
 		else if (name == "lamb"){
 			output = output + "L ";
 			output = output + jjtGetChild(0).astToString();
 			output = output + ".";
-			output = output + jjtGetChild(1).astToString();
+      if (children != null) {
+        for (int i = 1; i < children.length; ++i) {
+          SimpleNode n = (SimpleNode)children[i];
+          if (n != null) {
+            output = output + n.astToString();
+          }
+        }
+      }
 		}
 		else if (name == "..."){
 			output = output + "( " + jjtGetChild(0).astToString() + " )";
